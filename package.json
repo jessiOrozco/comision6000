@@ -2,7 +2,7 @@
   "name": "proyecto-final",
   "version": "1.0.0",
   "description": "Cafeteria ",
-  "main": "index.html",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "prettier": "prettier --write \"src/**/*.{js,ts,jsx,tsx,json,css,scss,md,html}\""

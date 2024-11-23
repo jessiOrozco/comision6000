@@ -3,7 +3,7 @@ import { getCartItems } from "./cart.js";
 let products = []
 
 async function cargaMenu(){
-    const response = await fetch("./data/menu.json");
+    const response = await fetch("./src/data/menu.json");
     products = await response.json();
 }
 
