@@ -1,47 +1,15 @@
 import { getCartItems } from "./cart.js";
 
-const products = [
-    {
-        id: 1,
-        name: "Cafe",
-        price: 10,
-        image: "https://upload.wikimedia.org/wikipedia/commons/thumb/4/45/A_small_cup_of_coffee.JPG/1200px-A_small_cup_of_coffee.JPG"
-    },
-    {
-        id: 2,
-        name: "Cafe con leche",
-        price: 20,
-        image: "https://i.blogs.es/421374/cafe-con-leche2/450_1000.jpg"
-    },
-    {
-        id: 3,
-        name: "Té",
-        price: 40,
-        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ6e61krKMDX3eMCv626q25pZauJK_f3U9MQQ&s"
-    },
-    {
-        id:4,
-        name: "Sandwich",
-        price: 60,
-        image: "https://www.unileverfoodsolutions.com.mx/dam/global-ufs/mcos/NOLA/calcmenu/recipes/MX-recipes/In-Development/FULL-SAND.png"
-    },
-    {
-        id:5,
-        name: "Chapata",
-        price: 80,
-        image: "https://editorialtelevisa.brightspotcdn.com/0f/32/18c73dfb4154b2d737ddc65e2e9d/chapatas-receta-facil-y-rapida.jpg"
-    },
-    {
-        id:6,
-        name: "Pan Dulce",
-        price: 50,
-        image: "https://www.victordzul.com/wp-content/uploads/2023/12/image-12.png"
-    }
-];
+let products = []
 
-export const renderProducts = () => {
+async function cargaMenu(){
+    const response = await fetch("./data/menu.json");
+    products = await response.json();
+}
+
+export const renderProducts = async () => {
+    await cargaMenu()
     const productList = document.getElementById("productList");
-
     products.forEach((product) => {
         const productCard = document.createElement("article");
         productCard.classList.add("product");
@@ -75,7 +43,7 @@ export const updateCartUi = () => {
         cartItem.setAttribute("data-id", item.id);
 
         cartItem.innerHTML = `
-     <div class="cart__item">
+     <div>
         <div class="cart__item-title">${item.title}</div>
         <div>${item.price}</div>
         <div>${item.quantity}</div>
@@ -87,7 +55,21 @@ export const updateCartUi = () => {
       </div>
     
     `;
-
         cartContainer.appendChild(cartItem);
     });
+    updateTotalCart()
 };
+
+const updateTotalCart = () => {
+    let total = 0;
+    const cartTotal = document.querySelector(".cart__totalPrice");
+
+    const cartItems = getCartItems()
+    cartItems.forEach((item) => {
+        let priceitem = item.price.replace("$", "");
+        let priceNumber = Number(priceitem);
+        total = total + priceNumber*item.quantity;
+    })
+    cartTotal.innerHTML = "Total: $" + total.toFixed(2);
+
+}
